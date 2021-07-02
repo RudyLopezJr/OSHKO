@@ -1,4 +1,3 @@
-
 class User(
     var username: String,
     var email: String,

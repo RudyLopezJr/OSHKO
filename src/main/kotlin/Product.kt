@@ -1,4 +1,3 @@
-
 class Product(
     var name1 : String ,
     var price: Float
