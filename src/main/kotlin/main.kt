@@ -1,7 +1,3 @@
-
-
-import javax.print.attribute.standard.JobOriginatingUserName
-
 fun main(){
 
     val fresa = Product("Fresa", 48.0f)
@@ -19,20 +15,20 @@ fun main(){
     val myProducts: MutableList<Product> = mutableListOf(fresa, manzanas, pesa, balon, pc, mouse, shampoo, bloqueador)
     val myWallet:  MutableList<Product> = mutableListOf()
 
-    val Lola18 = User("Lola18"," lolainthesky@gmail.com", "lolita18" )
-    val MarioRamírez = User("Mario Ramírez"," m.ramirez12@hotmail.com", "1010mramram" )
-    val ClaudiaV = User("Claudia V"," clau_valdez@gmail.com", "spike1123" )
-    val MiguelAngel = User("Miguel Angel"," miguelitochamoy@gmail.com", "mikemiguelmigu3lo" )
-    val Lazycat = User("a"," sussiegomezm@hotmail.com", "a" )
+    val lola18 = User("Lola18"," lolainthesky@gmail.com", "lolita18" )
+    val marioRamirez = User("Mario Ramírez"," m.ramirez12@hotmail.com", "1010mramram" )
+    val claudiaV = User("Claudia V"," clau_valdez@gmail.com", "spike1123" )
+    val miguelAngel = User("Miguel Angel"," miguelitochamoy@gmail.com", "mikemiguelmigu3lo" )
+    val lazyCat = User("a"," sussiegomezm@hotmail.com", "a" )
 
-    val myUsers: MutableList<User> = mutableListOf(Lola18, MarioRamírez, ClaudiaV, MiguelAngel, Lazycat)
+    val myUsers: MutableList<User> = mutableListOf(lola18, marioRamirez, claudiaV, miguelAngel, lazyCat)
 
 
     var checker : Boolean
     var aux: Int
 
     var auxUser: String
-    var auxContraseña: String
+    var auxContrasenia: String
 
     var counter: Int
     var checker2: Boolean
@@ -55,9 +51,9 @@ fun main(){
                 auxUser = readLine().toString()
 
                 print("Contraseña: ")
-                auxContraseña = readLine().toString()
+                auxContrasenia = readLine().toString()
 
-                checker = login(auxUser,auxContraseña, myUsers )
+                checker = login(auxUser,auxContrasenia, myUsers )
             }
             2 -> {
                 myUsers += registerUser()
@@ -167,35 +163,27 @@ fun main(){
 
 }
 
-fun registerUser() : User{
-    var auxUsername : String
-    var auxEmail: String
-    var auxPassword: String
+fun registerUser(): User {
 
     print("Escriba su usuario: ")
-    auxUsername = readLine().toString()
+    val auxUsername: String = readLine().toString()
     print("Escriba su correo: ")
-    auxEmail = readLine().toString()
+    val auxEmail: String = readLine().toString()
 
     print("Escriba su contraseña: ")
-    auxPassword = readLine().toString()
+    val auxPassword: String = readLine().toString()
 
-    val auxUser = User(auxUsername, auxEmail, auxPassword)
-
-    return auxUser
+    return User(auxUsername, auxEmail, auxPassword)
 }
 
-fun registerProduct(): Product{
-    var auxName: String
-    var auxPrice: Float
+fun registerProduct(): Product {
 
     print("Escriba el nombre del producto: ")
-    auxName = readLine().toString()
+    val auxName: String = readLine().toString()
     print("Escriba el precio del producto: ")
-    auxPrice = readLine()?.toFloat()!!
+    val auxPrice: Float = readLine()?.toFloat()!!
 
-    var auxProduct = Product(auxName,auxPrice)
-    return auxProduct
+    return Product(auxName, auxPrice)
 }
 
 fun login(user1: String, pass:String, userList: MutableList<User>): Boolean{
