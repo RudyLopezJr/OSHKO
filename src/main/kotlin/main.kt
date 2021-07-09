@@ -1,3 +1,5 @@
+const val lengthOfMaxElement = 15
+
 fun main(){
 
     val fresa = Product("Fresa", 48.0f)
@@ -30,20 +32,21 @@ fun main(){
     var auxUser: String
     var auxContrasenia: String
 
-    var counter: Int
     var checker2: Boolean
     var aux2: Int
 
     var acum1: Float
     var aux3: Int
 
+
+
     do{
+
         checker = false
-        println("1. Iniciar sesión")
-        println("2. Registrarse")
-        println("3. Salir ")
-        print("Digite su opcion: ")
-        aux = readLine()?.toInt()!!
+
+        //Se llama a la función printMenu, que muestra las opciones del arrayList
+        val menu1 =  arrayListOf("Iniciar sesión", "Registrarse", "Salir")
+        aux = printMenu(menu1)
 
         when(aux) {
             1 -> {
@@ -65,21 +68,13 @@ fun main(){
 
     do{
         checker = false
-        println("1. Mostrar productos")
-        println("2. Ir al carrito")
-        println("3. Salir ")
-        print("Digite su opcion: ")
 
-        aux = readLine()?.toInt()!!
+        val menu1 =  arrayListOf("Mostrar productos", "Ir al carrito ", "Salir")
+        aux = printMenu(menu1)
 
         when(aux) {
             1 -> {
-                counter = 1
-                print("Numero \t Nombre\t  Precio \t \n")
-                for(product in myProducts){
-                    print("$counter \t\t ${product.name1}\t\t ${product.price}\t\n")
-                    counter += 1
-                }
+                printProducts(myProducts)
                 checker2 = false
 
                 println("A continuación seleccione los productos que desee agregar al carrito")
@@ -99,13 +94,8 @@ fun main(){
             2 -> {
                 checker2 = false
                 do{
-                    println("1. Proceder a la compra")
-                    println("2. Mostrar productos")
-                    println("3. Eliminar producto")
-                    println("4. Salir")
-                    print("Digite su opcion: ")
-
-                    aux2 = readLine()?.toInt()!!
+                    val menu2 =  arrayListOf("Proceder a la compra", "Mostrar productos ", "Eliminar productos", "Salir")
+                    aux2 = printMenu(menu2)
 
                     when(aux2){
                         1 -> {
@@ -114,32 +104,16 @@ fun main(){
                         }
                         2 -> {
                             println("Sus productos son: ")
-                            acum1 = 0f
-                            counter = 1
-                            print("Numero \t | Nombre \t | Precio \t\n ")
-                            for(wallet in myWallet){
-                                print("$counter \t | ${wallet.name1} \t | ${wallet.price} \t \n ")
-                                acum1 += wallet.price
-                                println("=============================")
-                                counter += 1
-                            }
-
+                            printProducts(myWallet)
+                            acum1 = getPrice(myWallet)
+                            println("Precio acumulado: $acum1")
                             println("Precio acumulado: $acum1")
                         }
 
                         3 -> {
                             println("Sus productos son: ")
-                            acum1 = 0f
-                            counter = 1
-
-                            print("Numero \t | Nombre \t | Precio \t\n ")
-
-                            for(wallet in myWallet){
-                                print("$counter \t | ${wallet.name1} \t | ${wallet.price} \t \n ")
-                                acum1 += wallet.price
-                                counter += 1
-                            }
-
+                            printProducts(myWallet)
+                            acum1 = getPrice(myWallet)
                             println("Precio acumulado: $acum1")
 
                             print("Digite el número del producto a eliminar: ")
@@ -148,10 +122,10 @@ fun main(){
                             myWallet.removeAt(aux3 - 1)
                             println("Se ha eliminado el producto $aux3")
                         }
-                        else -> checker2 = true
+                        else -> {
+                            checker2 = true
+                        }
                     }
-
-
 
                 }while(!checker2)
             }
@@ -198,4 +172,79 @@ fun login(user1: String, pass:String, userList: MutableList<User>): Boolean{
     println("email o contraseña incorrecto")
     return false
 
+}
+
+fun printMenu(names: ArrayList<String>) : Int {
+    val n = names.size
+    for(i in 1..n){
+        println("${i}. ${names[i-1]}")
+    }
+    print("Digite su opcion: ")
+
+    val aux = readLine()?.toInt()!!
+
+    return aux
+}
+
+fun printLinesOfTable(names: ArrayList<String>){
+
+    val n = names.size
+    var aux1: Int
+    var aux2: Int
+
+    var spaces : String? = ""
+    var spaces2 : String? = ""
+
+    for(i in 0 until n){
+        val n2 = names[i].length
+        if(n2 <= lengthOfMaxElement){
+            aux1 = lengthOfMaxElement - n2
+
+            aux2 = aux1 / 2
+            spaces = ""
+            for(j in 1..aux2){
+                spaces += " "
+            }
+            aux2 = aux1 - aux2
+
+            spaces2 = ""
+            for(j in 1..aux2){
+                spaces2 += " "
+            }
+        }
+        val finalWord : String = spaces + names[i] + spaces2 + "|"
+        print(finalWord)
+    }
+    println()
+}
+
+fun printLine(largeOfLine: Int){
+    for(i in 1..largeOfLine){
+        print("-")
+    }
+    println()
+}
+
+fun printProducts( myProducts: MutableList<Product>) {
+    val lineOfTable = arrayListOf("Numero", "Nombre", "Precio Inicial", "Descuento" )
+    printLinesOfTable(lineOfTable)
+
+    val amountOfElements = lineOfTable.size
+    printLine(amountOfElements*lengthOfMaxElement + amountOfElements)
+
+    var counter = 1
+    for(product in myProducts){
+        arrayListOf(counter.toString(), product.name1, "${product.price}").apply {
+            printLinesOfTable(this)
+        }
+        counter += 1
+    }
+}
+
+fun getPrice(myProducts: MutableList<Product>) : Float {
+    var acum = 0f
+    for(product in myProducts){
+        acum += product.price
+    }
+    return acum
 }
