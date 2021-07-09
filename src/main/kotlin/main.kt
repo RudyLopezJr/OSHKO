@@ -2,6 +2,7 @@ const val lengthOfMaxElement = 15
 
 fun main(){
 
+    //Se registran los productos
     val fresa = Product("Fresa", 48.0f)
     val manzanas = Product("Manzanas", 32.0f)
 
@@ -107,7 +108,7 @@ fun main(){
                             printProducts(myWallet)
                             acum1 = getPrice(myWallet)
                             println("Precio acumulado: $acum1")
-                            println("Precio acumulado: $acum1")
+
                         }
 
                         3 -> {
@@ -226,7 +227,7 @@ fun printLine(largeOfLine: Int){
 }
 
 fun printProducts( myProducts: MutableList<Product>) {
-    val lineOfTable = arrayListOf("Numero", "Nombre", "Precio Inicial", "Descuento" )
+    val lineOfTable = arrayListOf("Numero", "Nombre", "Precio Inicial" )
     printLinesOfTable(lineOfTable)
 
     val amountOfElements = lineOfTable.size
