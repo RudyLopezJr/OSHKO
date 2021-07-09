@@ -5,15 +5,11 @@ class User(
 ) {
 
     /*
-
     init {
         println("El usuario $username ha sido registrado")
     }
-
      */
     fun imprimirNombre(){
         println("El usuario es: $username")
     }
 }
-
-
