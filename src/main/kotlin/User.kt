@@ -1,6 +1,7 @@
 class User(
     var username: String,
     var email: String,
+    var cel: String?,
     var password: String
 ) {
 

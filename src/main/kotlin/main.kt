@@ -18,11 +18,11 @@ fun main(){
     val myProducts: MutableList<Product> = mutableListOf(fresa, manzanas, pesa, balon, pc, mouse, shampoo, bloqueador)
     val myWallet:  MutableList<Product> = mutableListOf()
 
-    val lola18 = User("Lola18"," lolainthesky@gmail.com", "lolita18" )
-    val marioRamirez = User("Mario Ramírez"," m.ramirez12@hotmail.com", "1010mramram" )
-    val claudiaV = User("Claudia V"," clau_valdez@gmail.com", "spike1123" )
-    val miguelAngel = User("Miguel Angel"," miguelitochamoy@gmail.com", "mikemiguelmigu3lo" )
-    val lazyCat = User("a"," sussiegomezm@hotmail.com", "a" )
+    val lola18 = User("Lola18"," lolainthesky@gmail.com", null,  "lolita18" )
+    val marioRamirez = User("Mario Ramírez"," m.ramirez12@hotmail.com", null,  "1010mramram" )
+    val claudiaV = User("Claudia V"," clau_valdez@gmail.com", null, "spike1123" )
+    val miguelAngel = User("Miguel Angel"," miguelitochamoy@gmail.com","5511223344", "mikemiguelmigu3lo" )
+    val lazyCat = User("a"," sussiegomezm@hotmail.com","5512345678", "a" )
 
     val myUsers: MutableList<User> = mutableListOf(lola18, marioRamirez, claudiaV, miguelAngel, lazyCat)
 
@@ -148,7 +148,10 @@ fun registerUser(): User {
     print("Escriba su contraseña: ")
     val auxPassword: String = readLine().toString()
 
-    return User(auxUsername, auxEmail, auxPassword)
+    print("Escriba su celular: ")
+    val auxCel: String = readLine().toString()
+
+    return User(auxUsername, auxEmail, auxCel, auxPassword)
 }
 
 fun registerProduct(): Product {
