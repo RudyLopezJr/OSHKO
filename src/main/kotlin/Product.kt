@@ -1,7 +1,4 @@
-class Product(
-    var name1 : String ,
-    var price: Float
-) {
+class Product(var name1: String,  var price: Float , discount: Float) {
 
     /*
     init {
@@ -9,7 +6,17 @@ class Product(
     }
      */
 
-    fun imprimirNombre(){
-        println("El nombre es: $name1")
-    }
+    var discount = discount
+        set(value) {
+            println("Digite el nuevo descuento en decimales: ")
+            val aux = readLine()?.toFloat()!!
+            field = aux
+        }
+    var discountInString : String = ""
+        get() = "${(discount * 100).toInt()}%"
+
+
+    val finalPrice
+        get() = price - discount * price
+
 }

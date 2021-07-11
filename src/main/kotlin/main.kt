@@ -1,19 +1,22 @@
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+
 const val lengthOfMaxElement = 15
 
-fun main(){
+suspend fun main(){
 
     //Se registran los productos
-    val fresa = Product("Fresa", 48.0f)
-    val manzanas = Product("Manzanas", 32.0f)
+    val fresa = Product("Fresa", 48.0f, 0.0f)
+    val manzanas = Product("Manzanas", 32.0f, 0.1f)
 
-    val pesa = Product("pesa", 240.0f)
-    val balon = Product("balon", 132.0f)
+    val pesa = Product("pesa", 240.0f, 0.2f)
+    val balon = Product("balon", 132.0f, 0.0f)
 
-    val pc= Product("pc", 16000.0f)
-    val mouse=Product("mouse", 120.0f)
+    val pc= Product("pc", 16000.0f, 0.3f)
+    val mouse=Product("mouse", 120.0f, 0.4f)
 
-    val shampoo= Product("shampoo", 48.0f)
-    val bloqueador= Product("bloqueador", 52.0f)
+    val shampoo= Product("shampoo", 48.0f, 0.6f)
+    val bloqueador= Product("bloqueador", 52.0f, 0.0f)
 
     val myProducts: MutableList<Product> = mutableListOf(fresa, manzanas, pesa, balon, pc, mouse, shampoo, bloqueador)
     val myWallet:  MutableList<Product> = mutableListOf()
@@ -51,11 +54,9 @@ fun main(){
 
         when(aux) {
             1 -> {
-                print("Escribe tu usuario: ")
-                auxUser = readLine().toString()
+                auxUser = readOptionString("Escribe tu usuario: ")
 
-                print("Contraseña: ")
-                auxContrasenia = readLine().toString()
+                auxContrasenia = readOptionString("Contraseña: ")
 
                 checker = login(auxUser,auxContrasenia, myUsers )
             }
@@ -66,6 +67,8 @@ fun main(){
         }
 
     } while(!checker)
+
+
 
     do{
         checker = false
@@ -81,7 +84,7 @@ fun main(){
                 println("A continuación seleccione los productos que desee agregar al carrito")
                 println("Presione 0 para salir")
                 do{
-                    aux2 = readLine()?.toInt()!!
+                    aux2 = readOptionIntMenu("Digite el número del producto: ", myProducts.size)
                     when(aux2){
                         0 -> checker2 = true
                         else -> {
@@ -100,7 +103,7 @@ fun main(){
 
                     when(aux2){
                         1 -> {
-                            println("Se ha hecho el pago con exito :D ")
+                            terminatingProcess("Se está haciendo el pago", "La compra se ha realizado con éxito :D")
                             checker2 = true
                         }
                         2 -> {
@@ -117,8 +120,8 @@ fun main(){
                             acum1 = getPrice(myWallet)
                             println("Precio acumulado: $acum1")
 
-                            print("Digite el número del producto a eliminar: ")
-                            aux3 = readLine()?.toInt()!!
+
+                            aux3 = readOptionIntMenu("Digite el número del producto a eliminar: ", myWallet.size)
 
                             myWallet.removeAt(aux3 - 1)
                             println("Se ha eliminado el producto $aux3")
@@ -138,34 +141,38 @@ fun main(){
 
 }
 
-fun registerUser(): User {
+suspend fun registerUser(): User {
 
-    print("Escriba su usuario: ")
-    val auxUsername: String = readLine().toString()
-    print("Escriba su correo: ")
-    val auxEmail: String = readLine().toString()
+    val auxUsername: String = readOptionString("Escriba su usuario: ")
 
-    print("Escriba su contraseña: ")
-    val auxPassword: String = readLine().toString()
+    val auxEmail: String = readOptionString("Escriba su correo: ")
+
+    val auxPassword: String = readOptionString("Escriba su contraseña: ")
+
+
+    terminatingProcess("Se está registrando el usuario", "El usuario se ha registrado con éxito :D")
 
     return User(auxUsername, auxEmail, auxPassword)
 }
 
-fun registerProduct(): Product {
+suspend fun registerProduct(): Product {
 
-    print("Escriba el nombre del producto: ")
-    val auxName: String = readLine().toString()
-    print("Escriba el precio del producto: ")
-    val auxPrice: Float = readLine()?.toFloat()!!
+    val auxName: String = readOptionString("Escriba el nombre del producto: ")
 
-    return Product(auxName, auxPrice)
+    val auxPrice: Float = readOptionFloatMenu("Escriba el precio del producto: ")
+
+    val auxDiscount: Float = readOptionFloatMenu("Escriba el descuento del del producto: ")
+
+    terminatingProcess("Se está registrando el producto ", "El producto se ha registrado con éxito")
+
+    return Product(auxName, auxPrice, auxDiscount)
 }
 
-fun login(user1: String, pass:String, userList: MutableList<User>): Boolean{
+suspend fun login(user1: String, pass:String, userList: MutableList<User>): Boolean{
 
     for(auxUser in userList){
         if( (user1 == auxUser.username || user1 == auxUser.email) && pass == auxUser.password){
-            println("Inicio de sesión exitoso")
+            terminatingProcess("Iniciando sesión", "Sesión iniciada con exito")
             return true
         }
     }
@@ -175,16 +182,13 @@ fun login(user1: String, pass:String, userList: MutableList<User>): Boolean{
 
 }
 
-fun printMenu(names: ArrayList<String>) : Int {
+fun printMenu(names: ArrayList<String>): Int {
     val n = names.size
-    for(i in 1..n){
-        println("${i}. ${names[i-1]}")
+    for (i in 1..n) {
+        println("${i}. ${names[i - 1]}")
     }
-    print("Digite su opcion: ")
 
-    val aux = readLine()?.toInt()!!
-
-    return aux
+    return readOptionIntMenu("Digite su opción: ", n)
 }
 
 fun printLinesOfTable(names: ArrayList<String>){
@@ -227,7 +231,7 @@ fun printLine(largeOfLine: Int){
 }
 
 fun printProducts( myProducts: MutableList<Product>) {
-    val lineOfTable = arrayListOf("Numero", "Nombre", "Precio Inicial" )
+    val lineOfTable = arrayListOf("Numero", "Nombre", "Precio Inicial" , "Descuento" , "Precio Final" )
     printLinesOfTable(lineOfTable)
 
     val amountOfElements = lineOfTable.size
@@ -235,7 +239,7 @@ fun printProducts( myProducts: MutableList<Product>) {
 
     var counter = 1
     for(product in myProducts){
-        arrayListOf(counter.toString(), product.name1, "${product.price}").apply {
+        arrayListOf(counter.toString(), product.name1, "${product.price}", product.discountInString, "${product.finalPrice}").apply {
             printLinesOfTable(this)
         }
         counter += 1
@@ -248,4 +252,85 @@ fun getPrice(myProducts: MutableList<Product>) : Float {
         acum += product.price
     }
     return acum
+}
+
+
+fun readOptionIntMenu( phrase: String, limit: Int) : Int{
+
+    var checker = false
+    var aux  = 0
+
+
+    do{
+        print(phrase)
+        try{
+            readLine()?.toInt()!!.also { aux = it }
+            checker = true
+        }
+        catch (e : NumberFormatException){
+            println("Favor de ingresar una opción")
+        }
+        if(aux > limit){
+            println("Ingrese una opción correcta")
+            checker = false
+        }
+
+    } while(!checker)
+
+
+    return aux
+}
+
+fun readOptionFloatMenu( phrase: String) : Float{
+
+    var checker = false
+    var aux  = 0f
+
+
+    do{
+        print(phrase)
+        try{
+            readLine()?.toFloat()!!.also { aux = it }
+            checker = true
+        }
+        catch (e : NumberFormatException){
+            println("Favor de ingresar una opción")
+        }
+
+    } while(!checker)
+
+
+    return aux
+}
+
+
+fun readOptionString(phrase: String): String {
+
+    var checker = false
+    var aux = " "
+    var aux2: String?
+
+    do{
+        print(phrase)
+        aux2 = readLine().toString()
+        if(aux2 == ""){
+            println("Favor de ingresar un valor")
+        }
+        else{
+            aux = aux2
+            checker = true
+        }
+    } while(!checker)
+
+
+    return aux
+}
+
+suspend fun terminatingProcess(phrase: String, phrase2 : String ) = runBlocking{
+    println(phrase + "...")
+    delay(2_000)
+    println(phrase2)
+    println("Regresando... ")
+    delay(2_000)
+
 }
