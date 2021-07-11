@@ -1,7 +1,7 @@
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
-const val lengthOfMaxElement = 15
+const val lengthOfMaxElement = 15 //Variable para definir el tamaño máximo de caracteres
 
 suspend fun main(){
 
@@ -21,6 +21,7 @@ suspend fun main(){
     val myProducts: MutableList<Product> = mutableListOf(fresa, manzanas, pesa, balon, pc, mouse, shampoo, bloqueador)
     val myWallet:  MutableList<Product> = mutableListOf()
 
+    //Se registran los usuarios
     val lola18 = User("Lola18"," lolainthesky@gmail.com", null,  "lolita18" )
     val marioRamirez = User("Mario Ramírez"," m.ramirez12@hotmail.com", null,  "1010mramram" )
     val claudiaV = User("Claudia V"," clau_valdez@gmail.com", null, "spike1123" )
@@ -42,10 +43,8 @@ suspend fun main(){
     var acum1: Float
     var aux3: Int
 
-
-
+    //En esta sección se hace el login del usuario
     do{
-
         checker = false
 
         //Se llama a la función printMenu, que muestra las opciones del arrayList
@@ -69,7 +68,7 @@ suspend fun main(){
     } while(!checker)
 
 
-
+    //menú principal
     do{
         checker = false
 
@@ -83,6 +82,8 @@ suspend fun main(){
 
                 println("A continuación seleccione los productos que desee agregar al carrito")
                 println("Presione 0 para salir")
+
+                //Agregando productos al carrito
                 do{
                     aux2 = readOptionIntMenu("Digite el número del producto: ", myProducts.size)
                     when(aux2){
@@ -95,6 +96,8 @@ suspend fun main(){
 
                 } while(!checker2)
             }
+
+            //Ingresar al carrito
             2 -> {
                 checker2 = false
                 do{
@@ -141,6 +144,7 @@ suspend fun main(){
 
 }
 
+//Función para registrar usuarios
 suspend fun registerUser(): User {
 
     val auxUsername: String = readOptionString("Escriba su usuario: ")
@@ -158,6 +162,8 @@ suspend fun registerUser(): User {
     return User(auxUsername, auxEmail, auxCel, auxPassword)
 }
 
+
+//Función para registrar productos, no está en uso
 suspend fun registerProduct(): Product {
 
     val auxName: String = readOptionString("Escriba el nombre del producto: ")
@@ -171,6 +177,8 @@ suspend fun registerProduct(): Product {
     return Product(auxName, auxPrice, auxDiscount)
 }
 
+
+//Función para verificar el login
 suspend fun login(user1: String, pass:String, userList: MutableList<User>): Boolean{
 
     for(auxUser in userList){
@@ -185,6 +193,8 @@ suspend fun login(user1: String, pass:String, userList: MutableList<User>): Bool
 
 }
 
+//Función para imprimir las opciones del menú
+
 fun printMenu(names: ArrayList<String>): Int {
     val n = names.size
     for (i in 1..n) {
@@ -193,6 +203,8 @@ fun printMenu(names: ArrayList<String>): Int {
 
     return readOptionIntMenu("Digite su opción: ", n)
 }
+
+//Función que imprime las lineas de la tabla, separa los espacios y centra las palabras
 
 fun printLinesOfTable(names: ArrayList<String>){
 
@@ -226,6 +238,7 @@ fun printLinesOfTable(names: ArrayList<String>){
     println()
 }
 
+//Imprimer una linea larga, depende del tamaño que se desee
 fun printLine(largeOfLine: Int){
     for(i in 1..largeOfLine){
         print("-")
@@ -233,6 +246,7 @@ fun printLine(largeOfLine: Int){
     println()
 }
 
+//Imprime los productos en forma de tabla
 fun printProducts( myProducts: MutableList<Product>) {
     val lineOfTable = arrayListOf("Numero", "Nombre", "Precio Inicial" , "Descuento" , "Precio Final" )
     printLinesOfTable(lineOfTable)
@@ -249,6 +263,7 @@ fun printProducts( myProducts: MutableList<Product>) {
     }
 }
 
+//Función para enviar un precio acumulado de cierta cantidad de productos
 fun getPrice(myProducts: MutableList<Product>) : Float {
     var acum = 0f
     for(product in myProducts){
@@ -257,7 +272,7 @@ fun getPrice(myProducts: MutableList<Product>) : Float {
     return acum
 }
 
-
+//Función para leer desde consola los enteros
 fun readOptionIntMenu( phrase: String, limit: Int) : Int{
 
     var checker = false
@@ -284,6 +299,7 @@ fun readOptionIntMenu( phrase: String, limit: Int) : Int{
     return aux
 }
 
+//Función para leer desde consola los flotantes
 fun readOptionFloatMenu( phrase: String) : Float{
 
     var checker = false
@@ -306,6 +322,7 @@ fun readOptionFloatMenu( phrase: String) : Float{
     return aux
 }
 
+//Función para leer desde consola las String
 
 fun readOptionString(phrase: String): String {
 
@@ -329,6 +346,8 @@ fun readOptionString(phrase: String): String {
     return aux
 }
 
+
+// Función para simular carga
 suspend fun terminatingProcess(phrase: String, phrase2 : String ) = runBlocking{
     println(phrase + "...")
     delay(2_000)
